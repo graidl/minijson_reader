@@ -1,0 +1,6 @@
+# This is just a demo
+{ "field1":42, "array": [17,28,35], "field2":"asd" , # comment one
+# another comment
+	"nested":{"f1":33.44,"f2":true},"ignored":"jjj"
+}
+{ "intobj":11 }

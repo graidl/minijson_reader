@@ -1,6 +1,10 @@
 #ifndef MINIJSON_READER_H
 #define MINIJSON_READER_H
 
+// originally from https://github.com/giacomodrago/minijson_reader.git
+// fork: https://github.com/graidl/minijson_reader.git for
+// allowing comments starting with "#"
+
 #include <cstdlib>
 #include <cctype>
 #include <stdint.h>
@@ -141,6 +145,13 @@ public:
             return 0;
         }
 
+		// Added by GR to skip comments started with '#':
+		if (m_read_buffer[m_read_offset]=='#') {
+			while (++m_read_offset < m_length && 
+				m_read_buffer[m_read_offset]!='\n') 
+					;
+		}
+
         return m_read_buffer[m_read_offset++];
     }
 
@@ -216,7 +227,13 @@ public:
 
     char read()
     {
-        const char c = m_stream.get();
+        char c = m_stream.get();
+		// Added by GR to skip comments started with '#':
+		if (c=='#') {
+			string s;
+			getline(m_stream,s);
+			c=' ';
+		}
 
         if (m_stream)
         {
